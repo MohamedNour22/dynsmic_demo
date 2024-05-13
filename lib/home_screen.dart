@@ -102,9 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     ]
   });
+  final Map<String, TextEditingController> textEditingControllerMap = {};
+
   @override
   void initState() {
     // TODO: initState
+    model.fields?.forEach((field) {
+      if (field.type == 'Text') {
+        textEditingControllerMap[field.name!] = TextEditingController();
+      }
+    });
     super.initState();
   }
   @override
@@ -118,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: model.fields?.map((field) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: field.buildWidget(),
+              child: field.buildWidget(controller: textEditingControllerMap[field.name!]),
             );
           }).toList() ?? [],
         ),

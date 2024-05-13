@@ -47,7 +47,7 @@ class Fields {
       placeholder: json['Placeholder'],
       validations: json['Validations'] != null
           ? List<Validations>.from(
-          json['Validations'].map((x) => Validations.fromJson(x)))
+              json['Validations'].map((x) => Validations.fromJson(x)))
           : null,
       clickEvent: json['ClickEvent'],
       selectEvent: json['SelectEvent'],
@@ -58,44 +58,44 @@ class Fields {
     );
   }
 
-  Widget buildWidget() {
+// Method to build widget based on field type
+  Widget buildWidget({TextEditingController? controller}) {
     switch (type) {
       case 'Text':
-        return TextField(
+        return TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             labelText: text,
             hintText: placeholder,
           ),
-          onChanged: (value) {
-            // handle text change
+          validator: (value) {
+            // Implement validation logic here
           },
+          // Implement other properties and event handlers as needed
         );
       case 'Button':
         return ElevatedButton(
           onPressed: () {
-            // handle button click
+            // Implement button click logic here
           },
           child: Text(text ?? ''),
         );
       case 'dropdown':
-        return DropdownButtonFormField(
-          decoration: InputDecoration(
-            labelText: text,
-            hintText: placeholder,
-          ),
+        return DropdownButtonFormField<String>(
           value: null,
           onChanged: (value) {
-            // handle dropdown item selection
+            // Implement dropdown change logic here
           },
           items: items?.map((item) {
-            return DropdownMenuItem(
+            return DropdownMenuItem<String>(
               value: item.key,
               child: Text(item.value ?? ''),
             );
           }).toList(),
         );
+      // Add cases for other field types as needed
       default:
-        return SizedBox(); // Return empty widget for unsupported types
+        return Container();
     }
   }
 }
